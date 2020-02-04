@@ -14,32 +14,28 @@ exports.login = (req, res, next) => {
   const secretKey = process.env.APP_SECRET_KEY
   const { username, password } = req.body;
   const errors = [];
-
   const queryString = `
   SELECT
-  users.name, 
-  users.username,
-  users.password,
-  roles.name as role
+    users.id,
+    users.name, 
+    users.username,
+    users.password,
+    roles.name as role
   FROM users
   INNER JOIN roles
   WHERE users.role_id = roles.id
-  AND (users.username = ?)`;
+    AND (users.username = ?)`;
   const queryParams = [username];
-
   let user = {};
   let token = '';
-
   validator.required({ fieldName: 'username', value: username }, errors);
   validator.required({ fieldName: 'password', value: password }, errors);
-
   if (errors.length > 0) {
     return response.error(res, {
       message: 'validation error',
       errors: errors
     });
   }
-
   db.promise().query(queryString, queryParams).then(([rows]) => {
     if (rows.length === 0) {
       throw new Error('username not found');
@@ -51,6 +47,7 @@ exports.login = (req, res, next) => {
       throw new Error('incorrect password');
     }
     token = jwt.sign({
+      id: user.id,
       name: user.name,
       username: user.username,
       role: user.role
