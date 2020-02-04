@@ -1,10 +1,11 @@
 'use strict'
 
-exports.ok = ({message = 'success', data = {}, meta = {}, status = 200}, res) => {
+exports.ok = (res, {message = 'success', data = {}, errors = [], meta = {}, status = 200}) => {
   const resData = {
     'status': true,
     'message': message,
     'data': data,
+    'errors': errors,
     'meta': meta
   };
 
@@ -13,11 +14,12 @@ exports.ok = ({message = 'success', data = {}, meta = {}, status = 200}, res) =>
   res.end();
 }
 
-exports.error = ({message = 'failed', data = {}, meta = {}, status = 400}, res) => {
+exports.error = (res, {message = 'failed', data = {}, errors = [], meta = {}, status = 400}) => {
   const resData = {
     'status': false,
     'message': message,
     'data': data,
+    'errors': errors,
     'meta': meta
   };
 
