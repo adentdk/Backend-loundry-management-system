@@ -4,10 +4,11 @@ const response = require('./../helpers/res');
 
 module.exports = (req, res, next) => {
   try {
+    const secretKey = process.env.APP_SECRET_KEY
     const authorization = req.headers.authorization;
     if (!!authorization) {
       const token = authorization.split('Bearer ')[1];
-      const user = jwt.verify(token, 'YEAMPLOWW');
+      const user = jwt.verify(token, secretKey);
       if (user.role === 'administrator') {
         return next();
       }

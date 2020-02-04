@@ -9,7 +9,9 @@ exports.index = (req, res, next) => {
   next();
 };
 
+
 exports.login = (req, res, next) => {
+  const secretKey = process.env.APP_SECRET_KEY
   const { username, password } = req.body;
   const errors = [];
 
@@ -52,7 +54,7 @@ exports.login = (req, res, next) => {
       name: user.name,
       username: user.username,
       role: user.role
-    }, 'YEAMPLOWW');
+    }, secretKey);
     return response.ok(res, {
       message: 'login success',
       data: {
