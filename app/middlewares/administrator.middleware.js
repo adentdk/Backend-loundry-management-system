@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
       const token = authorization.split('Bearer ')[1];
       const user = jwt.verify(token, secretKey);
       if (user.role === 'administrator') {
+        req.authUser = user
         return next();
       }
       throw new Error('Forbidden'); 
