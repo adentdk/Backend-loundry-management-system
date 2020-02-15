@@ -9,7 +9,6 @@ exports.index = (req, res, next) => {
   next();
 };
 
-
 exports.login = (req, res, next) => {
   const secretKey = process.env.APP_SECRET_KEY
   const { username, password } = req.body;
