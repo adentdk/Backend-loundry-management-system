@@ -7,13 +7,11 @@ const {
   DB_NAME
 } = process.env;
 
-console.log(process.env.DB_HOST)
-
 const connection = mysql.createConnection({
   host: DB_HOST || 'localhost',
   user: DB_USER || 'root',
   password: DB_USER_PASSWORD || 'root',
-  database: DB_NAME || 'loundry_management'
+  database: DB_NAME || 'loundry_management_system'
 });
 
 connection.connect((err) => {
