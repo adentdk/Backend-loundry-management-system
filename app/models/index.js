@@ -1,17 +1,17 @@
 const mysql = require('mysql2');
 
 const {
-  DB_HOST,
-  DB_USER,
-  DB_USER_PASSWORD,
-  DB_NAME
+  APP_DB_HOST,
+  APP_DB_USER,
+  APP_DB_USER_PASSWORD,
+  APP_DB_NAME
 } = process.env;
 
 const connection = mysql.createConnection({
-  host: DB_HOST || 'localhost',
-  user: DB_USER || 'root',
-  password: DB_USER_PASSWORD || 'root',
-  database: DB_NAME || 'loundry_management_system'
+  host: APP_DB_HOST || 'localhost',
+  user: APP_DB_USER || 'root',
+  password: APP_DB_USER_PASSWORD || 'root',
+  database: APP_DB_NAME || 'loundry_management_system'
 });
 
 connection.connect((err) => {
