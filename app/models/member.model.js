@@ -11,13 +11,57 @@ exports.all = () => {
   })
 }
 
-exports.findId = (id) => {
+exports.findId = id => {
   return new Promise((resolve, reject) => {
     const queryString = 'SELECT * FROM members WHERE id=?'
     const queryParams = [id]
 
     db.promise().query(queryString, queryParams).then(([rows]) => {
       resolve(rows[0])
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+exports.add = data => {
+  return new Promise((resolve, reject) => {
+    const queryString = `
+      INSERT
+        INTO members (name, address, gender, phone)
+      VALUES (?, ?, ?, ?)
+    `
+    const queryParams = [data.name, data.address, data.gender, data.phone]
+
+    db.promise().query(queryString, queryParams).then(([result]) => {
+      resolve({
+        id: result.insertId,
+        ...data,
+      })
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+exports.updatePut = (id, data) => {
+  return new Promise((resolve, reject) => {
+    const queryString = `
+      UPDATE members
+      SET
+        name=?,
+        address=?,
+        gender=?,
+        phone=?
+      WHERE id=?
+    `
+    const queryParams = [data.name, data.address, data.gender, data.phone, id]
+
+    db.promise().query(queryString, queryParams).then(([result]) => {
+      resolve({
+        id: result.insertId,
+        ...data,
+      })
     }).catch(err => {
       reject(err)
     })

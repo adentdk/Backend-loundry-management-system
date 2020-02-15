@@ -8,5 +8,6 @@ router.get('/', controller.index)
 /* Member */
 router.get('/members', controller.allMembers)
 router.get('/member/:id', controller.memberDetails)
+router.post('/member', controller.addMember)
 
 module.exports = router;

@@ -37,5 +37,28 @@ exports.memberDetails = (req, res) => {
 }
 
 exports.addMember = (req, res) => {
-  response.ok(res, {})
+  const errors = []
+  const { name, address, gender, phone } = req.body
+  validator.required({fieldName: 'name', value: name}, errors)
+  validator.required({fieldName: 'address', value: address}, errors)
+  validator.required({fieldName: 'gender', value: gender}, errors)
+  validator.required({fieldName: 'phone', value: phone}, errors)
+
+  if (errors.length > 0) {
+    return response.error(res, {
+      status: 422,
+      message: 'Validation Error',
+      errors
+    })
+  }
+
+  member.add({ name, address, gender, phone }).then(result => {
+    response.ok(res, {
+      data: result
+    })
+  }).catch(error => {
+    response.error(res, {
+      errors: error
+    })
+  })
 }
