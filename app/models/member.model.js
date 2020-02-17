@@ -44,7 +44,7 @@ exports.add = data => {
   })
 }
 
-exports.updatePut = (id, data) => {
+exports.update = (id, data) => {
   return new Promise((resolve, reject) => {
     const queryString = `
       UPDATE members
@@ -53,17 +53,43 @@ exports.updatePut = (id, data) => {
         address=?,
         gender=?,
         phone=?
-      WHERE id=?
+      WHERE id=?;
+      SELECT * FROM members WHERE id=?
     `
-    const queryParams = [data.name, data.address, data.gender, data.phone, id]
+    const queryParams = [data.name, data.address, data.gender, data.phone, id, id]
 
     db.promise().query(queryString, queryParams).then(([result]) => {
-      resolve({
-        id: result.insertId,
-        ...data,
-      })
+      resolve(result[1])
     }).catch(err => {
       reject(err)
     })
   })
 }
+
+exports.updatePartial = (id, data) => {
+  return new Promise((resolve, reject) => {
+
+    const dataUpdate = {}
+
+    const queryString = `
+      UPDATE members SET ? WHERE id=?;
+      SELECT * FROM members WHERE id=?
+    `
+    
+    Object.keys(data).map(item => {
+      if (data[item]) {
+        dataUpdate[item] = data[item]
+      }
+    })
+
+    const queryParams = [dataUpdate, id, id]
+      
+    db.promise().query(queryString, queryParams).then(([result]) => {
+      const [queryResult, updatedData] = result
+      resolve(updatedData[0])
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+ 

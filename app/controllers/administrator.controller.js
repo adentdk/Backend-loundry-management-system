@@ -6,7 +6,7 @@ const db = require('./../models');
 const member = require('./../models/member.model');
 
 exports.index = (req, res)  => {
-  response.ok(res, {
+  return response.ok(res, {
     data: {
       text: 'Administrator/index'
     }
@@ -15,24 +15,24 @@ exports.index = (req, res)  => {
 
 exports.allMembers = (req, res) => {
    member.all().then(result => {
-     response.ok(res, {
+     return response.ok(res, {
        data: result
      })
    }).catch(err => {
      console.log(err)
-     response.error(res, {})
+     return response.error(res, {})
    })
 }
 
 exports.memberDetails = (req, res) => {
   const { id } = req.params
   member.findId(id).then(result => {
-    response.ok(res, {
+    return response.ok(res, {
       data: result
     })
   }).catch(err => {
     console.log(err)
-    response.error(res, {})
+    return response.error(res, {})
   })
 }
 
@@ -53,12 +53,50 @@ exports.addMember = (req, res) => {
   }
 
   member.add({ name, address, gender, phone }).then(result => {
-    response.ok(res, {
+    return response.ok(res, {
       data: result
     })
   }).catch(error => {
-    response.error(res, {
+    return response.error(res, {
       errors: error
     })
   })
+}
+
+exports.updateMember = async (req, res) => {
+  const errors = []
+  try {
+    const { name, address, gender, phone } = req.body
+    const { id } = req.params
+    if (req.method === 'PUT') {
+      validator.required({fieldName: 'name', value: name}, errors)
+      validator.required({fieldName: 'address', value: address}, errors)
+      validator.required({fieldName: 'gender', value: gender}, errors)
+      validator.required({fieldName: 'phone', value: phone}, errors)
+    }
+
+    if (errors.length > 0) {
+      throw new Error('error validation')
+    }
+
+    const data = {
+      name,
+      address,
+      gender,
+      phone
+    }
+
+    const result = req.method === 'PUT' ? await member.update(id, data) : await member.updatePartial(id, data)
+    return response.ok(res, { data: result })
+
+  } catch (error) {
+    if (error.message === 'error validation') {
+      return response.error(res, {
+        status: 422,
+        message: 'form validation',
+        errors: errors
+      }) 
+    } 
+    return response.error(res, { message: 'Something went wrong' })
+  }
 }

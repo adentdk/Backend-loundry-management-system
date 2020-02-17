@@ -11,7 +11,8 @@ const connection = mysql.createConnection({
   host: APP_DB_HOST || 'localhost',
   user: APP_DB_USER || 'root',
   password: APP_DB_USER_PASSWORD || 'root',
-  database: APP_DB_NAME || 'loundry_management_system'
+  database: APP_DB_NAME || 'loundry_management_system',
+  multipleStatements: true
 });
 
 connection.connect((err) => {
