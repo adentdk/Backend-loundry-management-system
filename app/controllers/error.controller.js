@@ -20,3 +20,24 @@ exports.methodNotAllowed = (req, res) => {
     message: 'Method Not Allowed'
   })
 }
+
+exports.forbiden = (req, res) => {
+  response.error(res, {
+    status: 403,
+    message: 'you doesn\'t have access to access this resource'
+  })
+}
+
+exports.unAuthenticated = (req, res) => {
+  response.error(res, {
+    status: 401,
+    message: 'no Authorization headers'
+  });
+}
+
+exports.invalidAuthorization = (req, res) => {
+  response.error(res, {
+    status: 401,
+    message: 'invalid Authorization'
+  });
+}

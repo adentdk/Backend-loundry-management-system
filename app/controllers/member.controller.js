@@ -1,14 +1,12 @@
-const jwt = require('jsonwebtoken');
-
 const response = require('./../helpers/res');
 const validator = require('./../helpers/validator');
-const db = require('./../models');
+
 const member = require('./../models/member.model');
 
 exports.index = (req, res)  => {
   return response.ok(res, {
     data: {
-      text: 'Administrator/index'
+      text: 'member/index'
     }
   })
 }

@@ -2,16 +2,14 @@ const createError = require('http-errors');
 
 const indexRoute = require('./index.route');
 const authRoute = require('./auth.route');
-const administratorRoute = require('./administrator.route');
+const memberRoute = require('./member.route');
 
 const errorController = require('./../controllers/error.controller');
-
-const isAdmin = require('./../middlewares/administrator.middleware');
 
 module.exports = (app) => {
   app.use('/', indexRoute);
   app.use('/auth', authRoute);
-  app.use('/administrator', isAdmin, administratorRoute);
+  app.use('/member', memberRoute);
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
