@@ -13,3 +13,10 @@ exports.serverError = (req, res) => {
     message: 'Internal Server Error'
   })
 }
+
+exports.methodNotAllowed = (req, res) => {
+  response.error(res, {
+    status: 405,
+    message: 'Method Not Allowed'
+  })
+}
