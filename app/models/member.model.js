@@ -99,11 +99,7 @@ exports.delete = id => {
     const queryParams = [id]
 
     db.promise().query(queryString, queryParams).then(([result])=> {
-      if (result.affectedRows > 0) {
-        return resolve(result)
-      } else {
-        throw new Error('no_affectedRow')
-      }
+      resolve(result)
     }).catch(error => {
       reject(error)
     })
