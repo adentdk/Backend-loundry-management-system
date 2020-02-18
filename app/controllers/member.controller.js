@@ -91,7 +91,7 @@ exports.updateMember = async (req, res) => {
     if (error.message === 'error validation') {
       return response.error(res, {
         status: 422,
-        message: 'form validation',
+        message: 'Validation Error',
         errors: errors
       }) 
     } 
