@@ -100,3 +100,14 @@ exports.updateMember = async (req, res) => {
     return response.error(res, { message: 'Something went wrong' })
   }
 }
+
+exports.deleteMember = (req, res) => {
+  const { id } = req.params
+  member.delete(id).then(result => {
+    return response.ok(res, {
+      data: result
+    })
+  }).catch(error => {
+    return response.error(error)
+  })
+}

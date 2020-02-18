@@ -92,4 +92,21 @@ exports.updatePartial = (id, data) => {
     })
   })
 }
+
+exports.delete = id => {
+  return new Promise((resolve, reject) => {
+    const queryString = 'DELETE FROM members WHERE id=?'
+    const queryParams = [id]
+
+    db.promise().query(queryString, queryParams).then(([result])=> {
+      if (result.affectedRows > 0) {
+        return resolve(result)
+      } else {
+        throw new Error('no_affectedRow')
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
  
